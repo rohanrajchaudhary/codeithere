@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeGalaxy - Conquer the Coding Universe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.css">
+    <style>
+        /* Theme Variables */
+        :root {
+            /* Light Theme */
+            --primary-light: #6e45e2;
+            --secondary-light: #88d3ce;
+            --dark-light: #0f0c29;
+            --light-light: #f8f9fa;
+            --accent-light: #ffd700;
+            --bg-light: #f8f9fa;
+            --text-light: #0f0c29;
+            --card-light: #ffffff;
+            
+            /* Dark Theme */
+            --primary-dark: #7d5bed;
+            --secondary-dark: #88d3ce;
+            --dark-dark: #0a0818;
+            --light-dark: #f8f9fa;
+            --accent-dark: #ffd700;
+            --bg-dark: #0a0818;
+            --text-dark: #f8f9fa;
+            --card-dark: rgba(15, 12, 41, 0.8);
+            
+            /* Space Theme (default dark) */
+            --primary-space: #6e45e2;
+            --secondary-space: #88d3ce;
+            --dark-space: #0f0c29;
+            --light-space: #f8f9fa;
+            --accent-space: #ffd700;
+            --bg-space: #0a0818;
+            --text-space: #f8f9fa;
+            --card-space: rgba(15, 12, 41, 0.8);
+            
+            /* Forest Theme */
+            --primary-forest: #2e7d32;
+            --secondary-forest: #81c784;
+            --dark-forest: #1b5e20;
+            --light-forest: #e8f5e9;
+            --accent-forest: #ffd600;
+            --bg-forest: #e8f5e9;
+            --text-forest: #1b5e20;
+            --card-forest: #ffffff;
+            
+            /* Ocean Theme */
+            --primary-ocean: #1565c0;
+            --secondary-ocean: #4fc3f7;
+            --dark-ocean: #0d47a1;
+            --light-ocean: #e1f5fe;
+            --accent-ocean: #00bcd4;
+            --bg-ocean: #e1f5fe;
+            --text-ocean: #0d47a1;
+            --card-ocean: #ffffff;
+            
+            /* Current Theme - Default to Space */
+            --primary: var(--primary-space);
+            --secondary: var(--secondary-space);
+            --dark: var(--dark-space);
+            --light: var(--light-space);
+            --accent: var(--accent-space);
+            --bg: var(--bg-space);
+            --text: var(--text-space);
+            --card: var(--card-space);
+        }
+
+        /* Theme Classes */
+        body.light-theme {
+            --primary: var(--primary-light);
+            --secondary: var(--secondary-light);
+            --dark: var(--dark-light);
+            --light: var(--light-light);
+            --accent: var(--accent-light);
+            --bg: var(--bg-light);
+            --text: var(--text-light);
+            --card: var(--card-light);
+        }
+
+        body.dark-theme {
+            --primary: var(--primary-dark);
+            --secondary: var(--secondary-dark);
+            --dark: var(--dark-dark);
+            --light: var(--light-dark);
+            --accent: var(--accent-dark);
+            --bg: var(--bg-dark);
+            --text: var(--text-dark);
+            --card: var(--card-dark);
+        }
+
+        body.space-theme {
+            --primary: var(--primary-space);
+            --secondary: var(--secondary-space);
+            --dark: var(--dark-space);
+            --light: var(--light-space);
+            --accent: var(--accent-space);
+            --bg: var(--bg-space);
+            --text: var(--text-space);
+            --card: var(--card-space);
+        }
+
+        body.forest-theme {
+            --primary: var(--primary-forest);
+            --secondary: var(--secondary-forest);
+            --dark: var(--dark-forest);
+            --light: var(--light-forest);
+            --accent: var(--accent-forest);
+            --bg: var(--bg-forest);
+            --text: var(--text-forest);
+            --card: var(--card-forest);
+        }
+
+        body.ocean-theme {
+            --primary: var(--primary-ocean);
+            --secondary: var(--secondary-ocean);
+            --dark: var(--dark-ocean);
+            --light: var(--light-ocean);
+            --accent: var(--accent-ocean);
+            --bg: var(--bg-ocean);
+            --text: var(--text-ocean);
+            --card: var(--card-ocean);
+        }
+
+        /* Base Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Space Mono', monospace;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: var(--text);
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            opacity: 0.2;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        .comet {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: linear-gradient(to right, rgba(255,255,255,0), var(--primary));
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: cometFly var(--comet-duration) linear infinite;
+        }
+
+        @keyframes cometFly {
+            0% {
+                transform: translateX(0) translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-1000px) translateY(500px);
+                opacity: 0;
+            }
+        }
+
+        /* Auth Modal Styles */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .auth-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .auth-container {
+            background-color: var(--card);
+            border-radius: 15px;
+            padding: 2rem;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid var(--primary);
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .auth-modal.active .auth-container {
+            transform: translateY(0);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .auth-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .auth-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            padding: 0.8rem 1rem;
+            border-radius: 5px;
+            border: 1px solid var(--primary);
+            background-color: rgba(var(--primary-rgb), 0.1);
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(var(--secondary-rgb), 0.2);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .auth-footer a {
+            color: var(--secondary);
+            text-decoration: none;
+            margin-left: 0.5rem;
+            cursor: pointer;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-btn {
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Space Mono', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:hover {
+            background-color: var(--secondary);
+        }
+
+        .auth-switch {
+            display: none;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: var(--card);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--primary);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .streak {
+            display: flex;
+            align-items: center;
+            background: rgba(var(--accent-rgb), 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--accent);
+        }
+
+        .streak i {
+            color: var(--accent);
+            margin-right: 0.5rem;
+        }
+
+        .coins {
+            display: flex;
+            align-items: center;
+            background: rgba(var(--primary-rgb), 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--primary);
+        }
+
+        .coins i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            height: calc(100vh - 60px);
+        }
+
+        .problem-panel {
+            width: 400px;
+            background-color: var(--card);
+            border-right: 1px solid var(--primary);
+            padding: 1.5rem;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .problem-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .problem-difficulty {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .easy {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+
+        .medium {
+            background-color: rgba(241, 196, 15, 0.2);
+            color: #f1c40f;
+        }
+
+        .hard {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .problem-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.7;
+        }
+
+        .problem-description {
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .problem-description p {
+            margin-bottom: 1rem;
+        }
+
+        .problem-description pre {
+            background-color: rgba(var(--dark-rgb), 0.3);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .problem-description code {
+            background-color: rgba(var(--dark-rgb), 0.3);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .example {
+            background-color: rgba(var(--dark-rgb), 0.5);
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--primary);
+        }
+
+        .example-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .constraints {
+            margin-top: 2rem;
+        }
+
+        .constraints h3 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .constraints ul {
+            padding-left: 1.5rem;
+        }
+
+        .constraints li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Editor Styles */
+        .editor-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg);
+        }
+
+        .editor-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--card);
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-selector select {
+            background-color: rgba(var(--primary-rgb), 0.2);
+            color: var(--text);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            border-radius: 5px;
+            appearance: none;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .language-selector::after {
+            content: '▼';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 0.7rem;
+            color: var(--secondary);
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .editor-btn {
+            background-color: rgba(var(--primary-rgb), 0.2);
+            color: var(--text);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .editor-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .editor-btn.run {
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .editor-btn.run:hover {
+            background-color: var(--secondary);
+        }
+
+        .editor-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #editor {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            font-size: 14px;
+        }
+
+        /* Console Styles */
+        .console-panel {
+            height: 200px;
+            background-color: var(--card);
+            border-top: 1px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .console-tab {
+            padding: 0.7rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            color: var(--text);
+        }
+
+        .console-tab.active {
+            border-bottom: 2px solid var(--primary);
+            color: var(--secondary);
+        }
+
+        .console-content {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .test-case {
+            margin-bottom: 1rem;
+        }
+
+        .test-case-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .test-case-result {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .success {
+            color: #2ecc71;
+        }
+
+        .failure {
+            color: #e74c3c;
+        }
+
+        /* Chatbot Styles */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-toggle i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .chatbot-container {
+            position: fixed;
+            bottom: 8rem;
+            right: 2rem;
+            width: 350px;
+            height: 500px;
+            background-color: var(--card);
+            border-radius: 15px;
+            border: 1px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-container.visible {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .chatbot-header {
+            padding: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-title {
+            font-weight: bold;
+        }
+
+        .chatbot-close {
+            cursor: pointer;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: rgba(var(--primary-rgb), 0.2);
+            padding: 0.8rem;
+            border-radius: 0 15px 15px 15px;
+            margin-right: auto;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: rgba(var(--secondary-rgb), 0.2);
+            padding: 0.8rem;
+            border-radius: 15px 0 15px 15px;
+            margin-left: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid var(--primary);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            background-color: rgba(var(--light-rgb), 0.1);
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50px;
+            color: var(--text);
+            outline: none;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .chatbot-input button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 0.5rem;
+            cursor: pointer;
+        }
+
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .quick-question {
+            background-color: rgba(var(--primary-rgb), 0.2);
+            color: var(--secondary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-question:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Theme Toggle Styles */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 1000;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-options {
+            position: fixed;
+            bottom: 7rem;
+            left: 2rem;
+            background: var(--card);
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--primary);
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .theme-options.show {
+            display: flex;
+        }
+
+        .theme-option {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+        }
+
+        .theme-option:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .theme-option .color-preview {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--light);
+        }
+
+        .theme-option[data-theme="light"] .color-preview {
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+        }
+
+        .theme-option[data-theme="dark"] .color-preview {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+        }
+
+        .theme-option[data-theme="space"] .color-preview {
+            background: linear-gradient(135deg, var(--primary-space), var(--secondary-space));
+        }
+
+        .theme-option[data-theme="forest"] .color-preview {
+            background: linear-gradient(135deg, var(--primary-forest), var(--secondary-forest));
+        }
+
+        .theme-option[data-theme="ocean"] .color-preview {
+            background: linear-gradient(135deg, var(--primary-ocean), var(--secondary-ocean));
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-50%) translateY(100%); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        /* Hidden class for elements that should be hidden */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="space-theme">
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+    <div class="comets" id="comets"></div>
+    
+    <!-- Auth Modals -->
+    <div class="auth-modal" id="loginModal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-logo">CodeGalaxy</div>
+                <h2 class="auth-title">Welcome Back, Astronaut!</h2>
+                <p class="auth-subtitle">Log in to continue your coding journey through the galaxy</p>
+            </div>
+            
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required placeholder="Enter your password">
+                </div>
+                
+                <button type="submit" class="auth-btn">Log In</button>
+            </form>
+            
+            <div class="auth-footer">
+                <span>New to CodeGalaxy?</span>
+                <a id="showRegister">Create an account</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="auth-modal" id="registerModal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-logo">CodeGalaxy</div>
+                <h2 class="auth-title">Join the Coding Universe</h2>
+                <p class="auth-subtitle">Create your account to start solving problems</p>
+            </div>
+            
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Username</label>
+                    <input type="text" id="registerName" required placeholder="Choose a username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required placeholder="Create a password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerConfirm">Confirm Password</label>
+                    <input type="password" id="registerConfirm" required placeholder="Confirm your password">
+                </div>
+                
+                <button type="submit" class="auth-btn">Sign Up</button>
+            </form>
+            
+            <div class="auth-footer">
+                <span>Already have an account?</span>
+                <a id="showLogin">Log in</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main App (hidden until authenticated) -->
+    <div id="appContainer" class="hidden">
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="logo">CodeGalaxy</div>
+            
+            <div class="nav-links">
+                <a href="#">Problems</a>
+                <a href="#">Discuss</a>
+                <a href="#">Contests</a>
+                <a href="#">Interview</a>
+                <a href="#">Store</a>
+            </div>
+            
+            <div class="user-menu">
+                <div class="streak">
+                    <i class="fas fa-fire"></i>
+                    <span id="streakCount">0 day streak</span>
+                </div>
+                <div class="coins">
+                    <i class="fas fa-coins"></i>
+                    <span id="coinCount">0</span>
+                </div>
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Problem Panel -->
+            <div class="problem-panel">
+                <div class="problem-header">
+                    <h1 class="problem-title">1. Two Sum</h1>
+                    <span class="problem-difficulty easy">Easy</span>
+                    <div class="problem-stats">
+                        <span><i class="fas fa-check"></i> 54.3% Acceptance</span>
+                        <span><i class="fas fa-comment"></i> 12.4k Discussions</span>
+                    </div>
+                </div>
+                
+                <div class="problem-description">
+                    <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to <code>target</code></em>.</p>
+                    
+                    <p>You may assume that each input would have <strong>exactly one solution</strong>, and you may not use the same element twice.</p>
+                    
+                    <p>You can return the answer in any order.</p>
+                    
+                    <div class="example">
+                        <div class="example-title">Example 1:</div>
+                        <pre>Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].</pre>
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">Example 2:</div>
+                        <pre>Input: nums = [3,2,4], target = 6
+Output: [1,2]</pre>
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-title">Example 3:</div>
+                        <pre>Input: nums = [3,3], target = 6
+Output: [0,1]</pre>
+                    </div>
+                    
+                    <div class="constraints">
+                        <h3>Constraints:</h3>
+                        <ul>
+                            <li><code>2 <= nums.length <= 10<sup>4</sup></code></li>
+                            <li><code>-10<sup>9</sup> <= nums[i] <= 10<sup>9</sup></code></li>
+                            <li><code>-10<sup>9</sup> <= target <= 10<sup>9</sup></code></li>
+                            <li><strong>Only one valid answer exists.</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Editor Panel -->
+            <div class="editor-panel">
+                <div class="editor-toolbar">
+                    <div class="language-selector">
+                        <select id="language-select">
+                            <option value="javascript">JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="c++">C++</option>
+                            <option value="c">C</option>
+                            <option value="c#">C#</option>
+                            <option value="ruby">Ruby</option>
+                            <option value="swift">Swift</option>
+                            <option value="go">Go</option>
+                            <option value="rust">Rust</option>
+                        </select>
+                    </div>
+                    
+                    <div class="editor-actions">
+                        <button class="editor-btn" id="resetBtn">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                        <button class="editor-btn" id="copyBtn">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                        <button class="editor-btn run" id="runBtn">
+                            <i class="fas fa-play"></i> Run
+                        </button>
+                        <button class="editor-btn" id="submitBtn">
+                            <i class="fas fa-paper-plane"></i> Submit
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="editor-container">
+                    <div id="editor">/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+    const map = new Map();
+    
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        
+        if (map.has(complement)) {
+            return [map.get(complement), i];
+        }
+        
+        map.set(nums[i], i);
+    }
+    
+    return [];
+};</div>
+                </div>
+                
+                <div class="console-panel">
+                    <div class="console-tabs">
+                        <div class="console-tab active" data-tab="test-cases">Test Cases</div>
+                        <div class="console-tab" data-tab="console">Console</div>
+                        <div class="console-tab" data-tab="results">Results</div>
+                    </div>
+                    
+                    <div class="console-content" id="test-cases-tab">
+                        <div class="test-case">
+                            <div class="test-case-title">Case 1</div>
+                            <div class="test-case-result success">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Passed: Output [0,1] matches expected</span>
+                            </div>
+                        </div>
+                        
+                        <div class="test-case">
+                            <div class="test-case-title">Case 2</div>
+                            <div class="test-case-result success">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Passed: Output [1,2] matches expected</span>
+                            </div>
+                        </div>
+                        
+                        <div class="test-case">
+                            <div class="test-case-title">Case 3</div>
+                            <div class="test-case-result success">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Passed: Output [0,1] matches expected</span>
+                            </div>
+                        </div>
+                        
+                        <div class="test-case">
+                            <div class="test-case-title">Case 4</div>
+                            <div class="test-case-result failure">
+                                <i class="fas fa-times-circle"></i>
+                                <span>Failed: Time Limit Exceeded</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="console-content" id="console-tab" style="display: none;">
+                        <div class="console-message">Console output will appear here...</div>
+                    </div>
+                    
+                    <div class="console-content" id="results-tab" style="display: none;">
+                        <div class="results-message">Submission results will appear here...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chatbot Toggle -->
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot"></i>
+        </div>
+        
+        <!-- Chatbot Container -->
+        <div class="chatbot-container" id="chatbotContainer">
+            <div class="chatbot-header">
+                <div class="chatbot-title">Cosmic Coding Assistant</div>
+                <div class="chatbot-close" id="chatbotClose">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot-message">
+                    Hello, astronaut! I'm here to help you with your coding challenges. What do you need help with today?
+                </div>
+                
+                <div class="quick-questions">
+                    <button class="quick-question" data-question="explain">Explain this problem</button>
+                    <button class="quick-question" data-question="optimize">Optimize my solution</button>
+                    <button class="quick-question" data-question="brute-force">Show brute force approach</button>
+                    <button class="quick-question" data-question="complexity">Time complexity analysis</button>
+                    <button class="quick-question" data-question="similar">Similar problems</button>
+                </div>
+            </div>
+            
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Ask me anything about coding...">
+                <button id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        
+        <!-- Theme Toggle -->
+        <div class="theme-toggle" id="themeToggle">
+            <i class="fas fa-palette"></i>
+        </div>
+        
+        <!-- Theme Options -->
+        <div class="theme-options" id="themeOptions">
+            <div class="theme-option" data-theme="space">
+                <span class="color-preview"></span>
+                <span>Space</span>
+            </div>
+            <div class="theme-option" data-theme="light">
+                <span class="color-preview"></span>
+                <span>Light</span>
+            </div>
+            <div class="theme-option" data-theme="dark">
+                <span class="color-preview"></span>
+                <span>Dark</span>
+            </div>
+            <div class="theme-option" data-theme="forest">
+                <span class="color-preview"></span>
+                <span>Forest</span>
+            </div>
+            <div class="theme-option" data-theme="ocean">
+                <span class="color-preview"></span>
+                <span>Ocean</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-twilight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-chrome.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-dracula.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-dawn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-tomorrow_night_blue.min.js"></script>
+    <script>
+        // User data storage
+        const USER_DATA_FILE = 'codegalaxy_users.csv';
+        let currentUser = null;
+        let users = [];
+
+        // Initialize ACE Editor
+        let editor;
+        
+        // DOM Elements
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const appContainer = document.getElementById('appContainer');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+        const streakCount = document.getElementById('streakCount');
+        const coinCount = document.getElementById('coinCount');
+        const userAvatar = document.getElementById('userAvatar');
+
+        // Load user data from CSV file
+        function loadUserData() {
+            try {
+                const data = localStorage.getItem(USER_DATA_FILE);
+                if (data) {
+                    const lines = data.split('\n');
+                    const headers = lines[0].split(',');
+                    
+                    for (let i = 1; i < lines.length; i++) {
+                        if (lines[i].trim() === '') continue;
+                        
+                        const values = lines[i].split(',');
+                        const user = {};
+                        
+                        for (let j = 0; j < headers.length; j++) {
+                            user[headers[j].trim()] = values[j] ? values[j].trim() : '';
+                        }
+                        
+                        users.push(user);
+                    }
+                } else {
+                    // Create initial CSV structure if file doesn't exist
+                    const headers = 'name,email,password,streak,coins,theme';
+                    localStorage.setItem(USER_DATA_FILE, headers);
+                }
+            } catch (e) {
+                console.error('Error loading user data:', e);
+            }
+        }
+
+        // Save user data to CSV file
+        function saveUserData() {
+            try {
+                if (users.length === 0) return;
+                
+                const headers = Object.keys(users[0]).join(',');
+                const lines = users.map(user => {
+                    return Object.values(user).join(',');
+                });
+                
+                const csvContent = [headers, ...lines].join('\n');
+                localStorage.setItem(USER_DATA_FILE, csvContent);
+            } catch (e) {
+                console.error('Error saving user data:', e);
+            }
+        }
+
+        // Add a new user
+        function addUser(name, email, password) {
+            const newUser = {
+                name,
+                email,
+                password, // Note: In a real app, passwords should be hashed
+                streak: 0,
+                coins: 100, // Starting coins
+                theme: 'space'
+            };
+            
+            users.push(newUser);
+            saveUserData();
+            return newUser;
+        }
+
+        // Find user by email
+        function findUserByEmail(email) {
+            return users.find(user => user.email === email);
+        }
+
+        // Authenticate user
+        function authenticateUser(email, password) {
+            const user = findUserByEmail(email);
+            if (user && user.password === password) {
+                return user;
+            }
+            return null;
+        }
+
+        // Update user stats
+        function updateUserStats() {
+            if (!currentUser) return;
+            
+            // Find the user in our array and update
+            const userIndex = users.findIndex(u => u.email === currentUser.email);
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                saveUserData();
+            }
+        }
+
+        // Show notification
+        function showNotification(message, isError = false) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            if (isError) {
+                notification.style.backgroundColor = '#e74c3c';
+            }
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Initialize the app
+        function initApp() {
+            loadUserData();
+            
+            // Show login modal by default
+            loginModal.classList.add('active');
+            
+            // Set up modal toggles
+            showRegister.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginModal.classList.remove('active');
+                registerModal.classList.add('active');
+            });
+            
+            showLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                registerModal.classList.remove('active');
+                loginModal.classList.add('active');
+            });
+            
+            // Login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                const user = authenticateUser(email, password);
+                if (user) {
+                    currentUser = user;
+                    loginModal.classList.remove('active');
+                    showNotification(`Welcome back, ${user.name}!`);
+                    
+                    // Initialize the app UI
+                    initAppUI();
+                } else {
+                    showNotification('Invalid email or password', true);
+                }
+            });
+            
+            // Register form submission
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirm = document.getElementById('registerConfirm').value;
+                
+                if (password !== confirm) {
+                    showNotification('Passwords do not match', true);
+                    return;
+                }
+                
+                if (findUserByEmail(email)) {
+                    showNotification('Email already registered', true);
+                    return;
+                }
+                
+                currentUser = addUser(name, email, password);
+                registerModal.classList.remove('active');
+                showNotification(`Welcome to CodeGalaxy, ${name}!`);
+                
+                // Initialize the app UI
+                initAppUI();
+            });
+        }
+
+        // Initialize the app UI after authentication
+        function initAppUI() {
+            // Hide auth modals, show app
+            loginModal.classList.remove('active');
+            registerModal.classList.remove('active');
+            appContainer.classList.remove('hidden');
+            
+            // Update user info in UI
+            streakCount.textContent = `${currentUser.streak} day streak`;
+            coinCount.textContent = currentUser.coins;
+            userAvatar.textContent = currentUser.name.charAt(0).toUpperCase();
+            
+            // Initialize ACE Editor
+            editor = ace.edit("editor");
+            editor.setTheme(`ace/theme/${currentUser.theme === 'light' ? 'chrome' : 'twilight'}`);
+            editor.session.setMode("ace/mode/javascript");
+            editor.setOptions({
+                fontSize: "14px",
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                highlightActiveLine: true,
+                showPrintMargin: false
+            });
+            
+            // Create stars
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = `${Math.random() * 3}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--duration', `${5 + Math.random() * 10}s`);
+                starsContainer.appendChild(star);
+            }
+            
+            // Create comets
+            const cometsContainer = document.getElementById('comets');
+            for (let i = 0; i < 3; i++) {
+                const comet = document.createElement('div');
+                comet.classList.add('comet');
+                comet.style.left = `${100 + Math.random() * 100}%`;
+                comet.style.top = `${Math.random() * 50}%`;
+                comet.style.setProperty('--comet-duration', `${30 + Math.random() * 30}s`);
+                cometsContainer.appendChild(comet);
+            }
+            
+            // Language selector
+            const languageSelect = document.getElementById('language-select');
+            languageSelect.addEventListener('change', function() {
+                const language = this.value;
+                let mode;
+                
+                switch(language) {
+                    case 'python':
+                        mode = 'ace/mode/python';
+                        break;
+                    case 'java':
+                        mode = 'ace/mode/java';
+                        break;
+                    case 'c++':
+                    case 'c':
+                        mode = 'ace/mode/c_cpp';
+                        break;
+                    case 'c#':
+                        mode = 'ace/mode/csharp';
+                        break;
+                    case 'ruby':
+                        mode = 'ace/mode/ruby';
+                        break;
+                    case 'swift':
+                        mode = 'ace/mode/swift';
+                        break;
+                    case 'go':
+                        mode = 'ace/mode/golang';
+                        break;
+                    case 'rust':
+                        mode = 'ace/mode/rust';
+                        break;
+                    default:
+                        mode = 'ace/mode/javascript';
+                }
+                
+                editor.session.setMode(mode);
+                
+                // Update editor content based on selected language
+                if (language !== 'javascript') {
+                    editor.setValue(`// Your ${language} solution here\n// Start typing your code...`);
+                } else {
+                    editor.setValue(`/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+    const map = new Map();
+    
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        
+        if (map.has(complement)) {
+            return [map.get(complement), i];
+        }
+        
+        map.set(nums[i], i);
+    }
+    
+    return [];
+};`);
+                }
+            });
+            
+            // Chatbot functionality
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotContainer = document.getElementById('chatbotContainer');
+            const chatbotClose = document.getElementById('chatbotClose');
+            const chatbotMessages = document.getElementById('chatbotMessages');
+            const chatbotInput = document.getElementById('chatbotInput');
+            const chatbotSend = document.getElementById('chatbotSend');
+            const quickQuestions = document.querySelectorAll('.quick-question');
+            
+            chatbotToggle.addEventListener('click', function() {
+                chatbotContainer.classList.toggle('visible');
+            });
+            
+            chatbotClose.addEventListener('click', function() {
+                chatbotContainer.classList.remove('visible');
+            });
+            
+            function addBotMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message bot-message';
+                messageDiv.textContent = text;
+                chatbotMessages.appendChild(messageDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+            
+            function addUserMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message user-message';
+                messageDiv.textContent = text;
+                chatbotMessages.appendChild(messageDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+            
+            chatbotSend.addEventListener('click', function() {
+                const message = chatbotInput.value.trim();
+                if (message) {
+                    addUserMessage(message);
+                    chatbotInput.value = '';
+                    
+                    // Simulate bot response
+                    setTimeout(() => {
+                        addBotMessage("I'm a simulated coding assistant. In a real implementation, I would analyze your code and provide helpful suggestions!");
+                    }, 1000);
+                }
+            });
+            
+            chatbotInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    chatbotSend.click();
+                }
+            });
+            
+            quickQuestions.forEach(button => {
+                button.addEventListener('click', function() {
+                    const questionType = this.getAttribute('data-question');
+                    let response = "";
+                    
+                    switch(questionType) {
+                        case 'explain':
+                            response = "The Two Sum problem requires finding two numbers in an array that add up to a specific target. You need to return their indices. The optimal solution uses a hash map for O(n) time complexity.";
+                            break;
+                        case 'optimize':
+                            response = "Your current solution is already optimal with O(n) time and space complexity. The hash map approach is the most efficient for this problem.";
+                            break;
+                        case 'brute-force':
+                            response = "A brute force approach would use nested loops to check every pair of numbers (O(n²) time). This is less efficient than the hash map solution.";
+                            break;
+                        case 'complexity':
+                            response = "Your solution has O(n) time complexity (single pass through array) and O(n) space complexity (storage for hash map).";
+                            break;
+                        case 'similar':
+                            response = "Similar problems: 3Sum, 4Sum, Two Sum II (sorted input), Subarray Sum Equals K, and Pair With Given Sum.";
+                            break;
+                    }
+                    
+                    addUserMessage(this.textContent);
+                    setTimeout(() => {
+                        addBotMessage(response);
+                    }, 500);
+                });
+            });
+            
+            // Console tabs functionality
+            const consoleTabs = document.querySelectorAll('.console-tab');
+            consoleTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs
+                    consoleTabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all content
+                    document.querySelectorAll('.console-content').forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    
+                    // Show selected content
+                    document.getElementById(`${tabName}-tab`).style.display = 'block';
+                });
+            });
+            
+            // Editor buttons functionality
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset the code to default?')) {
+                    editor.setValue(`/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+    const map = new Map();
+    
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        
+        if (map.has(complement)) {
+            return [map.get(complement), i];
+        }
+        
+        map.set(nums[i], i);
+    }
+    
+    return [];
+};`);
+                    showNotification('Code reset to default solution');
+                }
+            });
+            
+            document.getElementById('copyBtn').addEventListener('click', function() {
+                const code = editor.getValue();
+                navigator.clipboard.writeText(code).then(() => {
+                    showNotification('Code copied to clipboard!');
+                });
+            });
+            
+            document.getElementById('runBtn').addEventListener('click', function() {
+                // Simulate code execution
+                const testCases = document.querySelectorAll('.test-case-result');
+                testCases.forEach(testCase => {
+                    testCase.classList.remove('success', 'failure');
+                    testCase.classList.add(Math.random() > 0.2 ? 'success' : 'failure');
+                    
+                    const icon = testCase.querySelector('i');
+                    icon.className = testCase.classList.contains('success') ? 
+                        'fas fa-check-circle' : 'fas fa-times-circle';
+                    
+                    const text = testCase.querySelector('span');
+                    text.textContent = testCase.classList.contains('success') ? 
+                        'Passed: Output matches expected' : 'Failed: Time Limit Exceeded';
+                });
+                
+                showNotification('Code executed successfully!');
+                
+                // Switch to test cases tab
+                consoleTabs.forEach(t => t.classList.remove('active'));
+                document.querySelector('.console-tab[data-tab="test-cases"]').classList.add('active');
+                document.querySelectorAll('.console-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+                document.getElementById('test-cases-tab').style.display = 'block';
+                
+                // Update user stats (random chance to increase streak)
+                if (Math.random() > 0.3) {
+                    currentUser.streak += 1;
+                    currentUser.coins += 10;
+                    updateUserStats();
+                    streakCount.textContent = `${currentUser.streak} day streak`;
+                    coinCount.textContent = currentUser.coins;
+                }
+            });
+            
+            document.getElementById('submitBtn').addEventListener('click', function() {
+                // Simulate submission
+                showNotification('Problem submitted successfully!');
+                
+                // Switch to results tab
+                consoleTabs.forEach(t => t.classList.remove('active'));
+                document.querySelector('.console-tab[data-tab="results"]').classList.add('active');
+                document.querySelectorAll('.console-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+                document.getElementById('results-tab').style.display = 'block';
+                document.getElementById('results-tab').innerHTML = `
+                    <div class="test-case">
+                        <div class="test-case-title">Submission Result</div>
+                        <div class="test-case-result success">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Accepted: All test cases passed</span>
+                        </div>
+                    </div>
+                    <div class="test-case">
+                        <div class="test-case-title">Performance</div>
+                        <div class="test-case-result">
+                            <span>Runtime: 72ms (faster than 92.45% of JavaScript submissions)</span>
+                        </div>
+                        <div class="test-case-result">
+                            <span>Memory Usage: 42.3MB (less than 78.12% of JavaScript submissions)</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Update user stats
+                currentUser.streak += 1;
+                currentUser.coins += 20;
+                updateUserStats();
+                streakCount.textContent = `${currentUser.streak} day streak`;
+                coinCount.textContent = currentUser.coins;
+            });
+            
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('themeToggle');
+            const themeOptions = document.getElementById('themeOptions');
+            const themeOptionButtons = document.querySelectorAll('.theme-option');
+            
+            // Set initial editor theme
+            updateEditorTheme(currentUser.theme);
+            
+            // Toggle theme options visibility
+            themeToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                themeOptions.classList.toggle('show');
+            });
+            
+            // Handle theme selection
+            themeOptionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+                    
+                    // Remove all theme classes
+                    document.body.classList.remove(
+                        'light-theme', 'dark-theme', 'space-theme', 
+                        'forest-theme', 'ocean-theme'
+                    );
+                    
+                    // Add selected theme class
+                    document.body.classList.add(`${theme}-theme`);
+                    
+                    // Update user preference
+                    currentUser.theme = theme;
+                    updateUserStats();
+                    
+                    // Close theme options
+                    themeOptions.classList.remove('show');
+                    
+                    // Update editor theme
+                    updateEditorTheme(theme);
+                });
+            });
+            
+            // Close theme options when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!themeToggle.contains(e.target) && !themeOptions.contains(e.target)) {
+                    themeOptions.classList.remove('show');
+                }
+            });
+            
+            // Update code editor theme based on selected theme
+            function updateEditorTheme(theme) {
+                let editorTheme;
+                switch(theme) {
+                    case 'light':
+                        editorTheme = 'ace/theme/chrome';
+                        break;
+                    case 'dark':
+                        editorTheme = 'ace/theme/dracula';
+                        break;
+                    case 'forest':
+                        editorTheme = 'ace/theme/dawn';
+                        break;
+                    case 'ocean':
+                        editorTheme = 'ace/theme/tomorrow_night_blue';
+                        break;
+                    default: // space
+                        editorTheme = 'ace/theme/twilight';
+                }
+                editor.setTheme(editorTheme);
+            }
+        }
+
+        // Start the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
